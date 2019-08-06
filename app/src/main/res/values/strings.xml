@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">InstagramClone</string>
+    <string name="punch_speed">Punch Speed</string>
+    <string name="textview">TextView</string>
+    <string name="kick_speed">Kick Speed</string>
+
+    <string name="name">Name</string>
+    <string name="save">Save</string>
+</resources>
