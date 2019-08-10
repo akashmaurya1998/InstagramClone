@@ -2,9 +2,12 @@ package com.taxivaale.instagramclone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -31,24 +34,36 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin = findViewById(R.id.btnLogin);
         btnSignup = findViewById(R.id.btnSignup);
+        if (ParseUser.getCurrentUser() != null){
+            Intent intent = new Intent(LoginActivity.this, SocialMediaActivity.class);
+            startActivity(intent);
+        }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseUser.logInInBackground(edtEmail.getText().toString(), edtPassword.getText().toString(), new LogInCallback() {
-                    @Override
-                    public void done(ParseUser user, ParseException e) {
-                        if (user != null && e == null) {
-                            FancyToast.makeText(LoginActivity.this, user.get("username") + "is loged in successfully", Toast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
-                            Intent intent = new Intent(LoginActivity.this, Welcome.class);
-                            startActivity(intent);
-                        }
-                        else {
-                            FancyToast.makeText(LoginActivity.this, e.getMessage(),Toast.LENGTH_SHORT, FancyToast.ERROR, true).show();
+                if (edtEmail.getText().toString().equals("") || edtPassword.getText().toString().equals("")) {
+                    FancyToast.makeText(LoginActivity.this, "Every Field is compulsory", Toast.LENGTH_SHORT, FancyToast.INFO, false).show();
+                }
+                else {
+                    final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+                    progressDialog.setMessage("Loging You In");
+                    progressDialog.show();
+                    ParseUser.logInInBackground(edtEmail.getText().toString(), edtPassword.getText().toString(), new LogInCallback() {
+                        @Override
+                        public void done(ParseUser user, ParseException e) {
+                            if (user != null && e == null) {
+                                FancyToast.makeText(LoginActivity.this, user.get("username") + " is loged in successfully", Toast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
+                                Intent intent = new Intent(LoginActivity.this, SocialMediaActivity.class);
+                                startActivity(intent);
+                            } else {
+                                FancyToast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT, FancyToast.ERROR, true).show();
 
+                            }
+                            progressDialog.dismiss();
                         }
-                    }
-                });
+                    });
+                }
             }
         });
 
@@ -60,4 +75,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void rootLayoutTapped(View view){
+        try {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+
+    }
+
 }
