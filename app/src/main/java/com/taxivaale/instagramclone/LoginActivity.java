@@ -2,7 +2,6 @@ package com.taxivaale.instagramclone;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,8 +31,8 @@ public class LoginActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
 
-        btnLogin = findViewById(R.id.btnLogin);
-        btnSignup = findViewById(R.id.btnSignup);
+        btnLogin = findViewById(R.id.btnLoginS);
+        btnSignup = findViewById(R.id.btnSignupS);
         if (ParseUser.getCurrentUser() != null){
             Intent intent = new Intent(LoginActivity.this, SocialMediaActivity.class);
             startActivity(intent);
